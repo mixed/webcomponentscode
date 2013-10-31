@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<title>Shadow DOM</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,target-densitydpi=medium-dpi">
+<style>
+	b{
+		color:red;
+	}
+
+	#temp{
+		var-preColor:green;
+	}
+	x-button{
+		top: 20px;
+		position: relative;
+	}
+</style>
+</head>
+<body>
+
+
+<script>
+	
+
+	var xButtonProto = Object.create(HTMLButtonElement.prototype,{
+		length : {
+			get : function(){ 
+				return this.textContent.length
+			}
+		}
+	});
+	xButtonProto.some = function(){ //method 추가
+		alert("some");
+	}
+
+	var XButton = document.register('x-button',{
+		prototype: xButtonProto
+	});
+	
+	var xButton = new XButton();
+	xButton.textContent="테스트버튼입니다.";
+
+	document.body.appendChild(xButton);
+
+	// xButton.some();//alert("some");
+	// alert(xButton.length);// 9
+
+
+	
+
+</script>
+	
+</body>
+</html>
+
+

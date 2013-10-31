@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<title>Shadow DOM</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,target-densitydpi=medium-dpi">
+<style>
+	b{
+		color:red;
+	}
+
+	#button1{
+		var-preColor:pink;
+	}
+	x-button{
+		
+		position: relative;
+		top: 10px;
+		border:1px solid red; 
+		padding:10px;
+		cursor : pointer;
+	}
+</style>
+<script src="polymer.js"></script>
+
+</head>
+<body>
+
+<polymer-element name="x-button" constructor="XButton">
+	<template id="test">
+		<style type="text/css">
+			::content{ 
+				
+			}
+			span{
+				cursor: pointer;
+				color : var(preColor);
+				font-weight:bold;
+			}
+		</style>
+		<span class="pre" on-click="{{preClick}}">{{left}}</span>
+		<content></content>
+		<span class="next" on-click="{{nextClick}}">{{right}}</span>
+	</template>
+	<script>
+		Polymer('x-button',{
+			"left":"<-",
+			"right":"->",
+			"created" : function(){
+				alert("create");
+			},
+			"preClick":function(event,count,target){
+				var event = new CustomEvent("preclick");
+				this.dispatchEvent(event);
+			},
+			"nextClick":function(){
+				var event = new CustomEvent("nextclick");
+				this.dispatchEvent(event);
+			}
+		});
+
+	</script>
+</polymer-element>
+
+
+<x-button id="button1">asdf</x-button>
+
+<script>
+	document.querySelector("#button1").addEventListener("preclick",function(){
+		alert("preclick1");
+	});
+	document.querySelector("#button1").addEventListener("nextclick",function(){
+		alert("nextclick1");
+	});
+</script>
+	
+
+
+</body>
+</html>

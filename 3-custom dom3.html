@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<title>Shadow DOM</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,target-densitydpi=medium-dpi">
+<style>
+	b{
+		color:red;
+	}
+
+	#temp{
+		var-preColor:green;
+	}
+	x-button{
+		top: 20px;
+		position: relative;
+	}
+</style>
+</head>
+<body>
+<!--<x-button></x-button>-->
+
+<script>
+	
+
+	var xButtonProto = Object.create(HTMLButtonElement.prototype,{
+		length : {
+			get : function(){ return this.textContent.length}
+		}
+	});
+	
+	xButtonProto.createdCallback = function(){
+		alert("생성");
+	}
+	xButtonProto.enteredViewCallback = function(){
+		alert("삽입");
+	}
+	xButtonProto.leftViewCallback = function(){
+		alert("삭제");
+	}
+	xButtonProto.attributeChangedCallback = function(attr, oldAttr, newAttr){
+		alert(attr+"가 "+oldAttr+"에서 "+newAttr+"으로 변경");
+	}
+	
+	
+	xButtonProto.some = function(){
+		alert("some");
+	}
+
+	var XButton = document.register('x-button',{
+		prototype: xButtonProto
+	});
+	
+	var xButton = new XButton();
+	xButton.textContent="tesasdft";
+
+
+	document.body.appendChild(xButton);
+
+</script>
+	
+</body>
+</html>
+

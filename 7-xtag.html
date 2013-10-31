@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<title>Shadow DOM</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,target-densitydpi=medium-dpi">
+<style>
+	b{
+		color:red;
+	}
+
+	#button1{
+		var-preColor:green;
+	}
+	x-button{
+		position: relative;
+		top: 10px;
+		border:1px solid red; 
+		padding:10px;
+		cursor : pointer;
+	}
+</style>
+<script src="x-tag-components.js"></script>
+</head>
+<body>
+
+	<script>
+		xtag.register('x-button', {
+		  extends: 'button',
+		  lifecycle:{
+			created: function(){
+				this.innerHTML = '<span class="pre">&lt;</span>'+this.textContent+'<span class="next">&gt;</span>';
+			}
+		  },
+		  events: {
+			'click': function(e){
+				if(this.querySelector("span.pre") == e.target){
+					var event = new CustomEvent("preclick");
+					this.dispatchEvent(event);
+				}else if(this.querySelector("span.next") == e.target){
+					var event = new CustomEvent("nextclick");
+					this.dispatchEvent(event);
+				}				
+			}
+		  },
+		  accessors: {
+			'length': {
+			  get: function(){
+				return this.textContent.length;
+			  }
+			}
+		  },
+		  methods: {
+			hi: function(){alert("hi");}
+		  }
+		});
+	</script>
+	<x-button>asdf</x-button>
+	<script>
+		document.querySelector("x-button").addEventListener("preclick",function(){
+			alert("preclick");
+		});
+		document.querySelector("x-button").addEventListener("nextclick",function(){
+			alert("nextclick");
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<title>Shadow DOM</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,target-densitydpi=medium-dpi">
+<style>
+	b{
+		color:red;
+	}
+
+	#temp{
+		var-preColor:green;
+	}
+</style>
+<link rel="import" href="import.html"> 
+</head>
+<body>
+
+<x-button></x-button>
+
+<script>
+
+var link = document.querySelector('link[rel=import]'); 
+var import = link.import; 
+var templateButton= import.querySelector('template.button'); 
+
+</script>
+	
+</body>
+</html>

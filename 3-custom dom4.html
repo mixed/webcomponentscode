@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<title>Shadow DOM</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,target-densitydpi=medium-dpi">
+<style>
+	b{
+		color:red;
+	}
+
+	#temp{
+		var-preColor:green;
+	}
+	x-button{
+		top: 20px;
+		position: relative;
+		border:1px solid red; 
+		padding:10px;
+	}
+</style>
+</head>
+<body>
+<!--<x-button></x-button>-->
+
+<script>
+	
+
+	var xButtonProto = Object.create(HTMLButtonElement.prototype,{
+		createdCallback : {
+			value : function(){
+				
+				var key;
+				this.addEventListener("mousedown",function(){
+					key = setTimeout(function(){
+						var event = new CustomEvent("longtap", {"detail":{"time":new Date()}});
+						this.dispatchEvent(event);
+						key = null;
+					}.bind(this),1000);
+					
+				});
+
+				this.addEventListener("mouseup",function(){
+					if(key){
+						clearTimeout(key);
+					}
+				});
+			}
+		}
+	});
+
+
+	var XButton = document.register('x-button',{
+		prototype: xButtonProto
+	});
+	
+	var xButton = new XButton();
+	xButton.textContent="tesasdft";
+
+	xButton.addEventListener("longtap",function(e){
+		alert("longtap");
+		console.log(e);
+	});
+
+
+	document.body.appendChild(xButton);
+
+</script>
+	
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<title>Shadow DOM</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,target-densitydpi=medium-dpi">
+<style>
+	b{
+		color:red;
+	}
+
+	x-button{
+		position: relative;
+		top: 100px;
+	}
+	#button1{
+		var-preColor:green;
+	}
+</style>
+</head>
+<body>
+
+
+
+
+
+<template id="test">
+	<style type="text/css">
+		::content span{ 
+			color : var(preColor);
+		}
+		span{
+			cursor: pointer;
+		}
+	</style>
+	<span class="pre">&lt;</span>
+	<content></content>
+	<span class="next">&gt;</span>
+</template>
+
+
+<script>
+	var xButtonProto = Object.create(HTMLButtonElement.prototype,{
+		createdCallback : {
+			value : function(){
+
+				
+				var root = this.webkitCreateShadowRoot();
+				var temp = document.getElementById("test").content.cloneNode(true);
+				
+
+				this.style.cssText="border:1px solid red; padding:10px;";
+				
+				var key;
+				temp.querySelector(".pre").addEventListener("click",function(){
+						var event = new CustomEvent("preclick");
+						this.dispatchEvent(event);
+				});
+				temp.querySelector(".next").addEventListener("click",function(){
+						var event = new CustomEvent("nextclick");
+						this.dispatchEvent(event);
+				});
+
+
+				root.appendChild(temp);
+			}
+		}
+	});
+
+
+	var XButton = document.register('x-button',{
+		prototype: xButtonProto
+	});
+
+</script>
+
+<x-button id="button1">(버튼이다)</x-button>
+<x-button id="button2">(버튼이다2)</x-button>
+
+<script>
+	document.querySelector("#button1").addEventListener("preclick",function(){
+		alert("preclick1");
+	});
+	document.querySelector("#button1").addEventListener("nextclick",function(){
+		alert("nextclick1");
+	});
+	document.querySelector("#button2").addEventListener("preclick",function(){
+		alert("preclick2");
+	});
+	document.querySelector("#button2").addEventListener("nextclick",function(){
+		alert("nextclick2");
+	});
+</script>
+	
+</body>
+</html>

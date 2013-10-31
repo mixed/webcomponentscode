@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<title>Shadow DOM</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,target-densitydpi=medium-dpi">
+<style>
+	b{ 
+		color: red;
+	}
+</style>
+</head>
+<body>
+
+<div id="temp">
+	<div class="pre">앞으로</div>
+	<div class="next">뒤</div>
+</div>
+<script>
+	var host = document.querySelector('#temp');
+	var root = host.webkitCreateShadowRoot();
+	root.innerHTML = '<style>::content .next{color:blue;}</style>'+
+					 '<content select=".next"></content>'+
+					 '<b part="hi">안녕. Shadow DOM!</b>'+
+					 '<content select=".pre"></content>';
+</script>
+	
+</body>
+</html>
